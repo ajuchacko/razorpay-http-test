@@ -1,17 +1,19 @@
 {
-    "name": "vendor_slug/package_slug",
-    "description": ":package_description",
+    "name": "ajuchacko91/razorpay-http-test",
+    "description": "Enable Integrating razorpay payment gateway, with end to end tests.",
     "keywords": [
-        ":vendor_name",
-        "laravel",
-        "package_slug"
+        "razorpay",
+        "http-tests",
+        "end-to-end-tests",
+        "razorpay-http-test",
+        "ajuchacko91"
     ],
-    "homepage": "https://github.com/vendor_slug/package_slug",
+    "homepage": "https://github.com/ajuchacko91/razorpay-http-test",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Aju Chacko",
+            "email": "ajuchacko91@gmail.com",
             "role": "Developer"
         }
     ],
@@ -25,18 +27,17 @@
         "nunomaduro/collision": "^5.3",
         "orchestra/testbench": "^6.15",
         "phpunit/phpunit": "^9.3",
-        "spatie/laravel-ray": "^1.23",
         "vimeo/psalm": "^4.8"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Ajuchacko\\RazorpayHttp\\": "src",
+            "Ajuchacko\\RazorpayHttp\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "Ajuchacko\\RazorpayHttp\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -50,10 +51,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Ajuchacko\\RazorpayHttp\\RazorpayHttpServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\SkeletonFacade"
+                "RazorpayHttp": "Ajuchacko\\RazorpayHttp\\RazorpayHttpFacade"
             }
         }
     },

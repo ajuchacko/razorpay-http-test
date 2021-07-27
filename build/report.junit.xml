@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Ajuchacko\RazorpayHttp\Tests\ExampleTest" tests="1" assertions="1" failures="0" errors="0" warnings="0" skipped="0" time="0.066206" file="/Users/atom/Desktop/razorpay-http-test/tests/ExampleTest.php">
+    <testcase name="true_is_true" class="Ajuchacko\RazorpayHttp\Tests\ExampleTest" classname="Ajuchacko.RazorpayHttp.Tests.ExampleTest" file="/Users/atom/Desktop/razorpay-http-test/tests/ExampleTest.php" line="8" assertions="1" time="0.066206"/>
+  </testsuite>
+</testsuites>
