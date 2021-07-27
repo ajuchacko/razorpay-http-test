@@ -2,7 +2,7 @@
 
 namespace Ajuchacko\RazorpayHttp;
 
-class RazorpayHttp
+class Razorpay
 {
 	//
 }

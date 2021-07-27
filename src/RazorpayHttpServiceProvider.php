@@ -17,4 +17,17 @@ class RazorpayHttpServiceProvider extends PackageServiceProvider
             // ->hasMigration('create_skeleton_table')
             // ->hasCommand(SkeletonCommand::class);
     }
+
+    public function packageRegistered()
+    {
+         $this->app->singleton('razorpay', function ($app) {
+         	[$api_key, $api_secret] = config('razorpay-http');
+        	
+        	if ($app->environment() == 'testing') {
+	            return new Razorpay($api_key='', $api_secret='');
+        	} else {
+	            return new Api($api_key, $api_secret);
+        	}
+        });
+    }
 }

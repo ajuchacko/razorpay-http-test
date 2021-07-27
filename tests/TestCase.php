@@ -27,6 +27,8 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
+        config()->set('razorpay-http.api_key', 'test-api-key');
+        config()->set('razorpay-http.api_secret', 'test-api-secret');
 
         
         // include_once __DIR__.'/../database/migrations/create_skeleton_table.php.stub';
