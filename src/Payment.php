@@ -27,7 +27,7 @@ class Payment {
 			"method" => "card",
 			"amount_refunded" => 0,
 			"refund_status" => null,
-			"captured" => false,
+			"captured" => $this->captured(),
 			"description" => null,
 			"card_id" => "card_" . substr(md5(mt_rand()), 0, 14),
 			"bank" => null,
@@ -48,6 +48,13 @@ class Payment {
 			],
 			"created_at" => 1605871409
 		];
+
+		$order->updateStatus($this->captured());
+	}
+
+	public function captured()
+	{
+		return $this->status === 'captured';
 	}
 
 	public function __get($property)

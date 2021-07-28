@@ -42,4 +42,32 @@ class OrderStatesTest extends Testcase
 		$this->assertEquals('card', $payment->method);
 		$this->assertFalse($payment->captured);
 	}
+
+	/** @test */
+	function on_payment_capture_order_status_changes_to_paid()
+	{
+		$order = $this->razorpay->order->create([
+			'amount' => 100, 
+			'currency' => 'INR',
+			'receipt' => '123', 
+			'notes' => ['key' => 'custom order note'],
+			'partial_payment' => false
+		])->paidUsing([
+			'email' => 'jon@mail.com',
+			'contact' => '9898989898',
+			'card_number' => '4242424242424242',
+			'name' => 'jon doe',
+			'expiry' => now()->addYear(),
+			'cvv' => 123,
+		], 'captured');
+
+		$this->assertEquals('paid', $order->status);
+		$this->assertTrue($order->payments()->first()->captured);
+	}
+
+	/** @test */
+	function order_status_stays_paid_even_if_payment_is_refunded()
+	{
+		// TEST CODE
+	}
 }

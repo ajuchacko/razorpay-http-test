@@ -3,6 +3,8 @@
 namespace Ajuchacko\RazorpayHttp;
 
 class Order {
+
+	private static $states = ['created', 'attempted', 'paid'];
 	
 	public $response = [];
 
@@ -31,13 +33,24 @@ class Order {
 
     public function paidUsing(array $card, string $payment_status)
     {
-    	$this->response['status'] = 'attempted';
+    	$this->updateStatus(true);
     	++$this->attempts;
 
     	$payment = new Payment($payment_status);
     	$payment->createPaymentFor($this, $card);
     	$this->payments[] = $payment;
+
+    	return $this;
     }
+
+	public function updateStatus(bool $update)
+	{
+		$current_status = $this->response['status'];
+
+	    $key = array_search($current_status, self::$states) + 1;
+		
+		$this->response['status'] = $update ? self::$states[$key] : $current_status;
+	}
 
     public function payments()
     {
