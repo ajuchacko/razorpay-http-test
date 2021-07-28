@@ -5,6 +5,8 @@ namespace Ajuchacko\RazorpayHttp;
 class Order {
 	
 	public $response = [];
+
+	public $payments = [];
 	
 	public function create(array $parameters = [])
     {
@@ -25,6 +27,21 @@ class Order {
     	return $this->manager()->orders()->filter(function ($order) {
     		return $order->id !== null;
     	});
+    }
+
+    public function paidUsing(array $card, string $payment_status)
+    {
+    	$this->response['status'] = 'attempted';
+    	++$this->attempts;
+
+    	$payment = new Payment($payment_status);
+    	$payment->createPaymentFor($this, $card);
+    	$this->payments[] = $payment;
+    }
+
+    public function payments()
+    {
+    	return collect($this->payments);
     }
 
     protected function manager()

@@ -109,7 +109,7 @@ class OrderTest extends TestCase
     }
 
 // TO POST CONTROLLER
-     // $result = $this->razorpay->newOrder()->paidUsing($card, 'fail')
+    // $result = $this->razorpay->newOrder()->paidUsing($card, 'fail')
     // $response = $this->json('POST', "concerts/{$concert->id}/orders", [
     //     'email'            => 'john@example.com',
     //     'ticket_quantity'  => 3,
