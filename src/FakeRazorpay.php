@@ -7,7 +7,7 @@ use ReflectionClass;
 
 class FakeRazorpay
 {
-	private $orders = [];
+	private $orders;
 
 	public function __construct()
 	{
@@ -17,7 +17,7 @@ class FakeRazorpay
 	public function __call($property, $args)
 	{
 		if (property_exists($this, $property)) {
-            return $this->{$property};
+            return collect($this->{$property});
         }
 
         throw new \BadMethodCallException("Undefined Method [{$name}] called.");

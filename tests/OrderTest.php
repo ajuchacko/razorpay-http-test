@@ -4,6 +4,7 @@ namespace Ajuchacko\RazorpayHttp\Tests;
 
 use Ajuchacko\RazorpayHttp\FakeRazorpay;
 use Ajuchacko\RazorpayHttp\Order;
+use Illuminate\Support\Collection;
 
 class OrderTest extends TestCase
 {
@@ -61,6 +62,50 @@ class OrderTest extends TestCase
         );
 
         $this->assertCount(2, $this->razorpay->orders());
+    }
+
+    /** @test */
+    function it_can_fetch_an_order_by_id()
+    {
+        $order_id = $this->testOrders()->last()->id;
+
+        $order = $this->razorpay->order->fetch($order_id);
+
+        $this->assertEquals(20, $order->amount);
+        $this->assertEquals('USD', $order->currency);
+        $this->assertEquals(10, $order->receipt);
+    }
+
+    /** @test */
+    function it_can_get_all_orders()
+    {
+        // $options = [
+        //     // 'authorized' => false,
+        //     'receipt' => ,
+        //     'from' => ,
+        //     'to' => ,
+        //     'count' => ,
+        //     'skip' => ,
+        //     // 'expand' => []
+        // ];
+        $this->testOrders();
+
+        $orders = $this->razorpay->order->all();
+
+        $this->assertCount(10, $orders);
+    }
+
+    private function testOrders()
+    {
+        return Collection::times(10, function ($number) {
+            return $this->razorpay->order->create([
+                'amount' => $number + 10,
+                'currency' => 'USD',
+                'receipt' => $number, 
+                'notes' => ['user_id' => 'special uuid for user'],
+                'partial_payment' => false
+            ]);
+        });
     }
 
 // TO POST CONTROLLER

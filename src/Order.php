@@ -13,6 +13,25 @@ class Order {
     	return $this;
     }
 
+    public function fetch(string $id)
+    {
+    	return $this->manager()->orders()->first(function ($value, $key) use ($id) {
+    		return $value->id === $id;
+    	});
+    }
+
+    public function all(array $options = [])
+    {
+    	return $this->manager()->orders()->filter(function ($order) {
+    		return $order->id !== null;
+    	});
+    }
+
+    protected function manager()
+    {
+    	return app('razorpay');
+    }
+
     private function schema()
     {
 	    return array_keys([
@@ -55,6 +74,25 @@ class Order {
     		return $this->response[$property];
         }
 
-        throw new \BadMethodCallException("Undefined Property [{$property}] called.");
+        // throw new \BadMethodCallException("Undefined Property [{$property}] called.");
+        return;
     }
+
+   //  public function toArray()
+   //  {
+   //  	return [
+   //  		"id" => $this->id,
+			// "amount" => $this->amount,
+			// "entity" => $this->entity,
+			// "partial_payment" => $this->partial_payment,
+			// "amount_paid" => $this->amount_paid,
+			// "amount_due" => $this->amount_due,
+			// "currency" => $this->currency,
+			// "receipt" => $this->receipt,
+			// "status" => $this->status,
+			// "attempts" => $this->attempts,
+			// "notes" => $this->notes,
+			// "created_at" => $this->created_at,
+   //  	];
+   //  }
 }
