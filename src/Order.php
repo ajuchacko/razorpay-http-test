@@ -3,16 +3,14 @@
 namespace Ajuchacko\RazorpayHttp;
 
 class Order {
-
+	
 	public $response = [];
-
+	
 	public function create(array $parameters = [])
     {
-    	$order = new self();
+    	$this->newResponse($parameters);
 
-    	$order->newResponse($parameters);
-
-    	return $order;
+    	return $this;
     }
 
     private function schema()
