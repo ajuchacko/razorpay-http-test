@@ -2,6 +2,7 @@
 
 namespace Ajuchacko\RazorpayHttp;
 
+use Razorpay\Api\Api;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 // use VendorName\Skeleton\Commands\SkeletonCommand;
@@ -27,7 +28,7 @@ class RazorpayHttpServiceProvider extends PackageServiceProvider
         	if ($app->environment() == 'testing') {
 	            return new FakeRazorpay($api_key='', $api_secret='');
         	} else {
-	            return new Api($api_key, $api_secret);
+                return new Api($api_key, $api_secret);
         	}
         });
     }

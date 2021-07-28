@@ -30,33 +30,68 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 You can install the package via composer:
 
 ```bash
-composer require vendor_slug/package_slug
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --provider="VendorName\Skeleton\SkeletonServiceProvider" --tag="package_slug-migrations"
-php artisan migrate
+composer require ajuchacko91/razorpay-http-test
 ```
 
 You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="VendorName\Skeleton\SkeletonServiceProvider" --tag="package_slug-config"
+php artisan vendor:publish --provider="Ajuchacko\RazorpayHttp\RazorpayHttpServiceProvider"
 ```
 
 This is the contents of the published config file:
 
 ```php
 return [
+	'api_key' => env('RAZORPAY_API_KEY', null),
+	'api_secret' => env('RAZORPAY_API_SECRET', null),
 ];
 ```
 
 ## Usage
 
+You can write integration test like so without making network calls
+
 ```php
-$skeleton = new VendorName\Skeleton();
-echo $skeleton->echoPhrase('Hello, Spatie!');
+$this->razorpay = app('razorpay');
+$result = $this->razorpay->newOrder()->paidUsing($card)
+
+$response = $this->json('POST', "orders/{$order->id}", [
+    'quantity'		  	  => 3,
+    'email'            	  => 'john@example.com',
+    'razorpay_payment_id' => $result['razorpay_payment_id'];
+    'razorpay_order_id'   => $result['razorpay_order_id'];
+    'razorpay_signature'  => $result['razorpay_signaure'];
+]);
+
+$this->razorpay->order->fetch($result['razorpay_order_id']);
+```
+
+In controller
+
+```php
+use Razorpay\Api\Api;
+
+public function Store(Request $request, Api $paymentGateway)
+	$this->validate(request(), [
+	    'email'               => 'required|email',
+	    'quantity'            => 'required|min:1|integer',
+	    'razorpay_payment_id' => 'required',
+	    'razorpay_order_id'   => 'required',
+	    'razorpay_signature'  => 'required',
+	]);
+
+	try {
+	    $reservation = $order->reserveProducts(request('quantity'), request('email'));
+
+	    $paymentGateway->payment
+	    			   ->fetch(request('razorpay_payment_id'))
+	    			   ->capture(['amount' => $amount]);
+
+	    $order = $reservation->complete();
+
+	    ....
+}
+
 ```
 
 ## Testing
@@ -79,7 +114,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [ajuchacko91](https://github.com/ajuchacko91)
 - [All Contributors](../../contributors)
 
 ## License
