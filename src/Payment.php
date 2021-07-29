@@ -10,7 +10,7 @@ class Payment {
 	
 	private $status;
 
-	public function __construct(string $status)
+	public function __construct(string $status = '')
 	{
 		$this->status = $status;
 	}
@@ -52,6 +52,22 @@ class Payment {
 		];
 
 		$order->updateStatus($this->captured());
+	}
+
+	public function fetch(string $payment_id)
+	{
+		return $this->manager()->orders()
+							   ->flatMap(function (Order $order) {
+						    		return $order->payments()['items'];
+						    	})
+						    	->first(function (Payment $payment) use ($payment_id) {
+						    		return $payment->id === $payment_id;
+						    	});
+	}
+
+	public function manager()
+	{
+		return app('razorpay');
 	}
 
 	public function captured()

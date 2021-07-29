@@ -17,10 +17,10 @@ class Order {
     	return $this;
     }
 
-    public function fetch(string $id)
+    public function fetch(string $order_id)
     {
-    	return $this->manager()->orders()->first(function ($value, $key) use ($id) {
-    		return $value->id === $id;
+    	return $this->manager()->orders()->first(function (Order $order) use ($order_id) {
+    		return $order->id === $order_id;
     	});
     }
 
@@ -33,7 +33,7 @@ class Order {
 
     public function paidUsing(array $card, string $payment_status)
     {
-    	$this->updateStatus(true);
+    	$this->updateStatus($this->status() === self::$states[0]);
     	++$this->attempts;
 
     	$payment = new Payment($payment_status);
@@ -45,10 +45,10 @@ class Order {
 
 	public function updateStatus(bool $update)
 	{
-		$current_status = $this->response['status'];
+		$current_status = $this->status();
 
 	    $key = array_search($current_status, self::$states) + 1;
-		
+
 		$this->response['status'] = $update ? self::$states[$key] : $current_status;
 	}
 
@@ -112,6 +112,11 @@ class Order {
 
         // throw new \BadMethodCallException("Undefined Property [{$property}] called.");
         return;
+    }
+
+    public function status()
+    {
+    	return $this->response['status'];
     }
 
    //  public function toArray()

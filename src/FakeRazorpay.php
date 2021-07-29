@@ -29,6 +29,9 @@ class FakeRazorpay
 
         if (class_exists($class) && ! (new ReflectionClass($class))->isAbstract()) {
         	$property = Str::plural($name);
+        	if ($property === 'payments') {
+        		return new Payment;
+        	}
             return $this->{$property}[] = new $class;
         }
 
