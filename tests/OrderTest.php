@@ -11,13 +11,13 @@ class OrderTest extends TestCase
 	{
 		parent::setUp();
     	
-    	$this->razorpay = app('razorpay');
+    	$this->api = app('razorpay');
 	}
 
     /** @test */
     function it_can_create_a_test_order()
     {
-    	$order  = $this->razorpay->order->create(
+    	$order  = $this->api->order->create(
     		[
     			'amount' => 100, 
     			'currency' => 'INR',
@@ -41,7 +41,7 @@ class OrderTest extends TestCase
     /** @test */
     function it_can_create_as_many_orders_as_needed()
     {
-        $orderA  = $this->razorpay->order->create(
+        $orderA  = $this->api->order->create(
             [
                 'amount' => 100, 
                 'currency' => 'INR',
@@ -50,7 +50,7 @@ class OrderTest extends TestCase
                 'partial_payment' => false
             ]
         );
-        $orderB  = $this->razorpay->order->create(
+        $orderB  = $this->api->order->create(
             [
                 'amount' => 200, 
                 'currency' => 'USD',
@@ -60,7 +60,7 @@ class OrderTest extends TestCase
             ]
         );
 
-        $this->assertCount(2, $this->razorpay->orders());
+        $this->assertCount(2, $this->api->orders());
     }
 
     /** @test */
@@ -68,7 +68,7 @@ class OrderTest extends TestCase
     {
         $order_id = $this->createTestOrders()->last()->id;
 
-        $order = $this->razorpay->order->fetch($order_id);
+        $order = $this->api->order->fetch($order_id);
 
         $this->assertEquals(20, $order->amount);
         $this->assertEquals('USD', $order->currency);
@@ -89,7 +89,7 @@ class OrderTest extends TestCase
         // ];
         $this->createTestOrders();
 
-        $orders = $this->razorpay->order->all();
+        $orders = $this->api->order->all();
 
         $this->assertCount(10, $orders);
     }
@@ -102,7 +102,7 @@ class OrderTest extends TestCase
             ['failed', 'authorized']
         );
 
-        $payments = $this->razorpay->order->fetch($random_order->id)->payments(); 
+        $payments = $this->api->order->fetch($random_order->id)->payments(); 
 
         $this->assertArrayHasKey('count', $payments);
         $this->assertArrayHasKey('entity', $payments);
@@ -112,7 +112,7 @@ class OrderTest extends TestCase
     private function createTestOrders()
     {
         return Collection::times(10, function ($number) {
-            return $this->razorpay->order->create([
+            return $this->api->order->create([
                 'amount' => $number + 10,
                 'currency' => 'USD',
                 'receipt' => $number, 
@@ -137,7 +137,7 @@ class OrderTest extends TestCase
     }
 
 // TO POST CONTROLLER
-    // $result = $this->razorpay->newOrder()->paidUsing($card, 'fail')
+    // $result = $this->api->newOrder()->paidUsing($card, 'fail')
     // $response = $this->json('POST', "concerts/{$concert->id}/orders", [
     //     'email'            => 'john@example.com',
     //     'ticket_quantity'  => 3,

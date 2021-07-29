@@ -11,12 +11,12 @@ class RazorpayHttpTest extends TestCase
 	{
 		parent::setUp();
     	
-    	$this->razorpay = app('razorpay');
+    	$this->api = app('razorpay');
 	}
 
     /** @test */
     function can_get_fake_payment_gateway_instance()
     {
-    	$this->assertInstanceOf(FakeApi::class, $this->razorpay);
+    	$this->assertInstanceOf(FakeApi::class, $this->api);
     }
 }
