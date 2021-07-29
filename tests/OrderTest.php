@@ -67,7 +67,7 @@ class OrderTest extends TestCase
     /** @test */
     function it_can_fetch_an_order_by_id()
     {
-        $order_id = $this->testOrders()->last()->id;
+        $order_id = $this->createTestOrders()->last()->id;
 
         $order = $this->razorpay->order->fetch($order_id);
 
@@ -88,14 +88,29 @@ class OrderTest extends TestCase
         //     'skip' => ,
         //     // 'expand' => []
         // ];
-        $this->testOrders();
+        $this->createTestOrders();
 
         $orders = $this->razorpay->order->all();
 
         $this->assertCount(10, $orders);
     }
 
-    private function testOrders()
+    /** @test */
+    function it_can_fetch_all_payments_of_an_order()
+    {
+        $this->makePaymentsFor(
+            $random_order = $this->createTestOrders()->random(),
+            ['failed', 'authorized']
+        );
+
+        $payments = $this->razorpay->order->fetch($random_order->id)->payments(); 
+
+        $this->assertArrayHasKey('count', $payments);
+        $this->assertArrayHasKey('entity', $payments);
+        $this->assertCount(2, $payments['items']);
+    }
+
+    private function createTestOrders()
     {
         return Collection::times(10, function ($number) {
             return $this->razorpay->order->create([
@@ -106,6 +121,20 @@ class OrderTest extends TestCase
                 'partial_payment' => false
             ]);
         });
+    }
+
+    private function makePaymentsFor(Order $order, array $payment_states)
+    {
+        foreach ($payment_states as $payment_state) {
+            $order->paidUsing([
+                'email' => 'jon@mail.com',
+                'contact' => '9898989898',
+                'card_number' => '4242424242424242',
+                'name' => 'jon doe',
+                'expiry' => now()->addYear(),
+                'cvv' => random_int(123, 999),
+            ], $payment_state);
+        }
     }
 
 // TO POST CONTROLLER

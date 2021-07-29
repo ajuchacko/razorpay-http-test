@@ -4,6 +4,8 @@ namespace Ajuchacko\RazorpayHttp;
 
 class Payment {
 
+	private static $states = ['created', 'authorized', 'captured', 'refunded', 'failed'];
+
 	private $data;
 	
 	private $status;

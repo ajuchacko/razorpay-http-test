@@ -54,7 +54,13 @@ class Order {
 
     public function payments()
     {
-    	return collect($this->payments);
+    	$payments = collect($this->payments);
+
+    	return [
+    		'entity' => 'collection',
+    		'count'  => $payments->count(),
+    		'items'  => $payments
+    	];
     }
 
     protected function manager()
