@@ -21,15 +21,17 @@ class RazorpayHttpServiceProvider extends PackageServiceProvider
 
     public function packageRegistered()
     {
-         $this->app->singleton('razorpay', function ($app) {
-         	
+        $this->app->singleton(Api::class, function ($app) {
+           	
          	[$api_key, $api_secret] = array_values(config('razorpay-http'));
 
         	if ($app->environment() == 'testing') {
-	            return new FakeRazorpay($api_key='', $api_secret='');
+	            return new FakeApi($api_key='', $api_secret='');
         	} else {
                 return new Api($api_key, $api_secret);
         	}
         });
+
+        $this->app->instance('razorpay', $this->app->make(Api::class));
     }
 }

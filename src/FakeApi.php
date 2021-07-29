@@ -3,9 +3,10 @@
 namespace Ajuchacko\RazorpayHttp;
 
 use Illuminate\Support\Str;
+use Razorpay\Api\Api;
 use ReflectionClass;
 
-class FakeRazorpay
+class FakeApi extends Api
 {
 	private $orders;
 

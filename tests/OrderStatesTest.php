@@ -10,13 +10,13 @@ class OrderStatesTest extends Testcase
 	{
 		parent::setUp();
     	
-    	$this->razorpay = app('razorpay');
+    	$this->api = app('razorpay');
 	}
 
 	/** @test */
 	function on_payment_attempt_order_status_changes_to_attempted()
 	{
-		$order = $this->razorpay->order->create([
+		$order = $this->api->order->create([
 			'amount' => 100, 
 			'currency' => 'INR',
 			'receipt' => '123', 
@@ -46,7 +46,7 @@ class OrderStatesTest extends Testcase
 	/** @test */
 	function on_payment_capture_order_status_changes_to_paid()
 	{
-		$order = $this->razorpay->order->create([
+		$order = $this->api->order->create([
 			'amount' => 100, 
 			'currency' => 'INR',
 			'receipt' => '123', 
@@ -68,7 +68,7 @@ class OrderStatesTest extends Testcase
 	/** test */
 	function order_status_stays_paid_even_if_payment_is_refunded()
 	{
-		$order = $this->razorpay->order->create([
+		$order = $this->api->order->create([
 			'amount' => 100, 
 			'currency' => 'INR',
 			'receipt' => '123', 
@@ -84,7 +84,7 @@ class OrderStatesTest extends Testcase
 		], 'captured');
 
 		$payment = $order->payments()->first();
-		$refund = $this->razorpay->refund->create(['payment_id' => $payment->id]);
+		$refund = $this->api->refund->create(['payment_id' => $payment->id]);
 
 		$this->assertEquals('paid', $order->status);
 	}

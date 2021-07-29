@@ -2,7 +2,6 @@
 
 namespace Ajuchacko\RazorpayHttp\Tests;
 
-use Ajuchacko\RazorpayHttp\FakeRazorpay;
 use Ajuchacko\RazorpayHttp\Order;
 use Illuminate\Support\Collection;
 

@@ -2,7 +2,7 @@
 
 namespace Ajuchacko\RazorpayHttp\Tests;
 
-use Ajuchacko\RazorpayHttp\FakeRazorpay;
+use Ajuchacko\RazorpayHttp\FakeApi;
 use Ajuchacko\RazorpayHttp\Order;
 
 class RazorpayHttpTest extends TestCase
@@ -17,6 +17,6 @@ class RazorpayHttpTest extends TestCase
     /** @test */
     function can_get_fake_payment_gateway_instance()
     {
-    	$this->assertInstanceOf(FakeRazorpay::class, $this->razorpay);
+    	$this->assertInstanceOf(FakeApi::class, $this->razorpay);
     }
 }
