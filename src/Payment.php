@@ -65,6 +65,21 @@ class Payment {
 						    	});
 	}
 
+	public function capture(array $options)
+	{
+		if ($this->status !== self::$states[1]) {
+			throw new \Exception("Only authorized payments can be captured");
+		}
+
+		if ($options['amount'] > $this->amount) {
+			throw new \Exception("Only authorized amounts can be captured");
+		}
+
+		$this->status = 'captured';
+		
+		return $this;
+	}
+
 	public function manager()
 	{
 		return app('razorpay');
