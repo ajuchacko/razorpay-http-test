@@ -56,11 +56,11 @@ class Order {
     {
     	$payments = collect($this->payments);
 
-    	return [
+    	return collect([
     		'entity' => 'collection',
     		'count'  => $payments->count(),
     		'items'  => $payments
-    	];
+    	]);
     }
 
     protected function manager()

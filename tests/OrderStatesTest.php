@@ -36,7 +36,7 @@ class OrderStatesTest extends Testcase
 
 		$this->assertEquals('attempted', $order->status);
 		$this->assertEquals(1, $order->attempts);
-		$this->assertInstanceOf(Payment::class, $payment = $order->payments()->first());
+		$this->assertInstanceOf(Payment::class, $payment = $order->payments()['items']->first());
 		$this->assertEquals('authorized', $payment->status);
 		$this->assertEquals($order->id, $payment->order_id);
 		$this->assertEquals('card', $payment->method);
@@ -62,7 +62,7 @@ class OrderStatesTest extends Testcase
 		], 'captured');
 
 		$this->assertEquals('paid', $order->status);
-		$this->assertTrue($order->payments()->first()->captured);
+		$this->assertTrue($order->payments()['items']->first()->captured);
 	}
 
 	/** test */
