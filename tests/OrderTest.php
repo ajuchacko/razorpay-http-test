@@ -109,6 +109,35 @@ class OrderTest extends TestCase
         $this->assertCount(2, $payments['items']);
     }
 
+    /** @test */
+    function it_can_parse_payment_response_after_payment()
+    {
+        $card = [
+                'email' => 'jon@mail.com',
+                'contact' => '9898989898',
+                'card_number' => '4242424242424242',
+                'name' => 'jon doe',
+                'expiry' => now()->addYear(),
+                'cvv' => 454,
+        ];
+        $details = [
+            'amount' => 500,
+            'currency' => 'USD',
+            'receipt' => 534759374, 
+            'notes' => [],
+            'partial_payment' => false
+        ];
+
+        $order = $this->api->newOrder($details)->paidUsing($card, 'authorized');
+
+        $this->assertEquals($order->id, $order['razorpay_order_id']);
+        $this->assertEquals(
+            $order->payments()['items']->last()->id, 
+            $order['razorpay_payment_id']
+        );
+        $this->assertNotNull($order['razorpay_signature']);
+    }
+
     private function createTestOrders()
     {
         return Collection::times(10, function ($number) {

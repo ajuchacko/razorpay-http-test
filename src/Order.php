@@ -2,9 +2,13 @@
 
 namespace Ajuchacko\RazorpayHttp;
 
-class Order {
+use ArrayAccess;
 
+class Order implements ArrayAccess
+{
 	private static $states = ['created', 'attempted', 'paid'];
+    
+    protected $payment_response = [];
 	
 	public $response = [];
 
@@ -39,6 +43,15 @@ class Order {
     	$payment = new Payment($payment_status);
     	$payment->createPaymentFor($this, $card);
     	$this->payments[] = $payment;
+
+        $signature = hash_hmac(
+            'sha256', "{$this->id}|{$payment->id}", FakeApi::getSecret()
+        );
+        $this->payment_response = [
+            'razorpay_payment_id' => $payment->id,
+            'razorpay_signature'  => $signature,
+            'razorpay_order_id'   => $this->id
+        ];
 
     	return $this;
     }
@@ -117,6 +130,35 @@ class Order {
     public function status()
     {
     	return $this->response['status'];
+    }
+
+    public function get($key, $default = null)
+    {
+        if (array_key_exists($key, $this->payment_response)) {
+            return $this->payment_response[$key];
+        }
+
+        return value($default);
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->payment_response[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+    
+    public function offsetSet($offset, $value)
+    {
+        # code...
+    }
+
+    public function offsetUnset($offset)
+    {
+        # code...
     }
 
    //  public function toArray()

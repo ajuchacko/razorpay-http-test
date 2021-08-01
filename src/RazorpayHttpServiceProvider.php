@@ -26,7 +26,7 @@ class RazorpayHttpServiceProvider extends PackageServiceProvider
          	[$api_key, $api_secret] = array_values(config('razorpay-http'));
 
         	if ($app->environment() == 'testing') {
-	            return new FakeApi($api_key='', $api_secret='');
+	            return new FakeApi($api_key, $api_secret);
         	} else {
                 return new Api($api_key, $api_secret);
         	}

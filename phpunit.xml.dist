@@ -23,6 +23,10 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <env name="RAZORPAY_API_KEY" value="razor_api_key"/>
+        <env name="RAZORPAY_API_SECRET" value="razory_api_secret"/>
+    </php>
     <coverage>
         <include>
             <directory suffix=".php">./src</directory>

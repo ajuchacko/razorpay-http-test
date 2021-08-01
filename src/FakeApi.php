@@ -10,9 +10,9 @@ class FakeApi extends Api
 {
 	private $orders;
 
-	public function __construct()
+	public function __construct($key, $secret)
 	{
-		# code...
+		parent::__construct($key, $secret);
 	}
 
 	public function newOrder(array $parameters = [])
