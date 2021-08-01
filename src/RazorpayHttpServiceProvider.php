@@ -14,9 +14,6 @@ class RazorpayHttpServiceProvider extends PackageServiceProvider
         $package
             ->name('razorpay-http')
             ->hasConfigFile();
-            // ->hasViews()
-            // ->hasMigration('create_skeleton_table')
-            // ->hasCommand(SkeletonCommand::class);
     }
 
     public function packageRegistered()
